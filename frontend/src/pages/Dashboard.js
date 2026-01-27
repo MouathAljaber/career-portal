@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -18,7 +19,11 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Divider
+  Divider,
+  Alert,
+  Chip,
+  Stack,
+  LinearProgress
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -71,12 +76,49 @@ const Dashboard = () => {
       ]
     }
   });
+  const [studentData, setStudentData] = useState(null);
+  const [studentLoading, setStudentLoading] = useState(false);
+  const [studentError, setStudentError] = useState('');
 
   useEffect(() => {
     if (!user) {
       navigate('/login');
     }
   }, [user, navigate]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchStudentDashboard = async () => {
+      if (!user || user.role !== 'student') {
+        setStudentData(null);
+        return;
+      }
+
+      setStudentLoading(true);
+      setStudentError('');
+
+      try {
+        const response = await axios.get('http://localhost:5000/api/student/dashboard');
+        if (!isMounted) return;
+        setStudentData(response.data?.data);
+      } catch (error) {
+        if (!isMounted) return;
+        const message = error.response?.data?.message || 'Unable to load your dashboard data right now';
+        setStudentError(message);
+      } finally {
+        if (isMounted) {
+          setStudentLoading(false);
+        }
+      }
+    };
+
+    fetchStudentDashboard();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [user]);
 
   const handleLogout = () => {
     logout();
@@ -88,6 +130,15 @@ const Dashboard = () => {
   };
 
   const currentDashboard = dashboardData[user?.role] || dashboardData.student;
+  const statsToRender =
+    user?.role === 'student' && studentData?.stats
+      ? [
+          { label: 'Skills Tracked', value: String(studentData.stats.skillsTracked || 0) },
+          { label: 'Recommendations', value: String(studentData.stats.totalRecommendations || 0) },
+          { label: 'Mentor Matches', value: String(studentData.stats.mentorMatches || 0) },
+          { label: 'Applications Sent', value: '0' }
+        ]
+      : currentDashboard.stats;
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#f5f5f5' }}>
@@ -192,7 +243,7 @@ const Dashboard = () => {
 
           {/* Stats Section */}
           <Grid container spacing={3} sx={{ mb: 4 }}>
-            {currentDashboard.stats.map((stat, index) => (
+            {statsToRender.map((stat, index) => (
               <Grid item xs={12} sm={6} md={3} key={index}>
                 <Card>
                   <CardContent sx={{ textAlign: 'center' }}>
@@ -207,6 +258,126 @@ const Dashboard = () => {
               </Grid>
             ))}
           </Grid>
+
+          {/* Recommendations & Mentorship */}
+          {user?.role === 'student' && (
+            <Grid container spacing={3} sx={{ mb: 4 }}>
+              <Grid item xs={12} md={7}>
+                <Card>
+                  <CardContent>
+                    <Typography variant="h5" gutterBottom>
+                      Recommended Internships
+                    </Typography>
+                    {studentLoading && <LinearProgress />}
+                    {studentError && (
+                      <Alert severity="error" sx={{ mt: 2 }}>
+                        {studentError}
+                      </Alert>
+                    )}
+                    {!studentLoading && !studentError && (
+                      <Grid container spacing={2}>
+                        {(studentData?.recommendedInternships || []).length === 0 && (
+                          <Grid item xs={12}>
+                            <Typography color="textSecondary">
+                              No recommendations yet. Add skills to your profile to get tailored roles.
+                            </Typography>
+                          </Grid>
+                        )}
+                        {(studentData?.recommendedInternships || []).map((internship) => (
+                          <Grid item xs={12} key={internship.id}>
+                            <Card variant="outlined">
+                              <CardContent>
+                                <Typography variant="h6">{internship.title}</Typography>
+                                <Typography variant="subtitle2" color="textSecondary" gutterBottom>
+                                  {internship.company} • {internship.location}
+                                </Typography>
+                                <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+                                  {internship.duration} • {internship.stipend}
+                                </Typography>
+                                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mb: 1 }}>
+                                  {internship.sharedSkills?.length ? (
+                                    internship.sharedSkills.map((skill) => (
+                                      <Chip key={skill} label={skill} color="primary" size="small" />
+                                    ))
+                                  ) : (
+                                    internship.skills.map((skill) => (
+                                      <Chip key={skill} label={skill} size="small" />
+                                    ))
+                                  )}
+                                </Stack>
+                                <Typography variant="body2" sx={{ mb: 1 }}>
+                                  Match score: {internship.matchScore}%
+                                </Typography>
+                                <Typography variant="body2" color="textSecondary">
+                                  {internship.description}
+                                </Typography>
+                              </CardContent>
+                            </Card>
+                          </Grid>
+                        ))}
+                      </Grid>
+                    )}
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={5}>
+                <Card>
+                  <CardContent>
+                    <Typography variant="h5" gutterBottom>
+                      Mentorship Highlights
+                    </Typography>
+                    {studentLoading && <LinearProgress />}
+                    {studentError && (
+                      <Alert severity="error" sx={{ mt: 2 }}>
+                        {studentError}
+                      </Alert>
+                    )}
+                    {!studentLoading && !studentError && (
+                      <Grid container spacing={2}>
+                        {(studentData?.mentorshipHighlights || []).length === 0 && (
+                          <Grid item xs={12}>
+                            <Typography color="textSecondary">
+                              No mentor matches yet. Add skills to see aligned mentors.
+                            </Typography>
+                          </Grid>
+                        )}
+                        {(studentData?.mentorshipHighlights || []).map((mentor) => (
+                          <Grid item xs={12} key={mentor.id}>
+                            <Card variant="outlined">
+                              <CardContent>
+                                <Typography variant="h6">{mentor.name}</Typography>
+                                <Typography variant="subtitle2" color="textSecondary">
+                                  {mentor.title} • {mentor.company}
+                                </Typography>
+                                <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+                                  Focus: {mentor.focusAreas.join(', ')}
+                                </Typography>
+                                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mb: 1 }}>
+                                  {mentor.sharedSkills?.length ? (
+                                    mentor.sharedSkills.map((skill) => (
+                                      <Chip key={skill} label={skill} color="primary" size="small" />
+                                    ))
+                                  ) : (
+                                    mentor.skills.map((skill) => (
+                                      <Chip key={skill} label={skill} size="small" />
+                                    ))
+                                  )}
+                                </Stack>
+                                <Typography variant="body2" color="textSecondary">
+                                  Weekly availability: {mentor.slotsPerWeek} sessions • Timezone {mentor.timezone}
+                                </Typography>
+                              </CardContent>
+                            </Card>
+                          </Grid>
+                        ))}
+                      </Grid>
+                    )}
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
+          )}
 
           {/* Features Section */}
           <Card>
