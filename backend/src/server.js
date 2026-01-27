@@ -15,6 +15,8 @@ app.use(express.json());
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
+const studentRoutes = require('./routes/studentRoutes');
+const mentorRoutes = require('./routes/mentorRoutes');
 
 // Basic test route (before DB connection)
 app.get('/health', (req, res) => {
@@ -33,6 +35,8 @@ connectDB()
     
     // Mount routes
     app.use('/api/auth', authRoutes);
+    app.use('/api/student', studentRoutes);
+    app.use('/api/mentors', mentorRoutes);
     
     // Root endpoint
     app.get('/', (req, res) => {
@@ -48,6 +52,12 @@ connectDB()
             register: 'POST /api/auth/register',
             login: 'POST /api/auth/login',
             getMe: 'GET /api/auth/me (protected)'
+          },
+          student: {
+            dashboard: 'GET /api/student/dashboard (protected, student role)'
+          },
+          mentors: {
+            list: 'GET /api/mentors (protected)'
           },
           health: 'GET /health'
         }

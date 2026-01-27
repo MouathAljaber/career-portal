@@ -1,0 +1,118 @@
+// Static recommendation data to bootstrap dashboard experiences without extra collections.
+const internships = [
+  {
+    id: 'int-frontend-react',
+    title: 'Frontend Intern (React)',
+    company: 'TechNova Labs',
+    location: 'Remote',
+    duration: '12 weeks',
+    stipend: '$1,200/mo',
+    skills: ['react', 'javascript', 'css', 'html'],
+    description: 'Work with senior engineers to ship UI features and accessibility fixes.'
+  },
+  {
+    id: 'int-backend-node',
+    title: 'Backend Intern (Node.js)',
+    company: 'DataForge',
+    location: 'Hybrid - Austin, TX',
+    duration: '10 weeks',
+    stipend: '$1,500/mo',
+    skills: ['node', 'express', 'mongodb', 'api design'],
+    description: 'Build APIs, write tests, and tune queries for a data analytics product.'
+  },
+  {
+    id: 'int-ux-research',
+    title: 'UX Research Intern',
+    company: 'Humanly',
+    location: 'Remote',
+    duration: '8 weeks',
+    stipend: '$1,000/mo',
+    skills: ['research', 'interviews', 'figma', 'prototyping'],
+    description: 'Plan studies, synthesize insights, and collaborate with product designers.'
+  },
+  {
+    id: 'int-ml',
+    title: 'Machine Learning Intern',
+    company: 'Visionary AI',
+    location: 'Remote',
+    duration: '14 weeks',
+    stipend: '$1,800/mo',
+    skills: ['python', 'pandas', 'numpy', 'ml'],
+    description: 'Prototype ML models, run experiments, and help deploy inference endpoints.'
+  },
+  {
+    id: 'int-mobile-react-native',
+    title: 'Mobile Intern (React Native)',
+    company: 'Pulse Health',
+    location: 'Hybrid - Seattle, WA',
+    duration: '10 weeks',
+    stipend: '$1,400/mo',
+    skills: ['react native', 'typescript', 'testing'],
+    description: 'Ship patient-facing mobile features and improve release stability.'
+  },
+  {
+    id: 'int-devops',
+    title: 'DevOps Intern',
+    company: 'CloudCurrent',
+    location: 'Remote',
+    duration: '12 weeks',
+    stipend: '$1,600/mo',
+    skills: ['aws', 'docker', 'ci/cd', 'scripting'],
+    description: 'Automate pipelines, improve observability, and harden cloud deployments.'
+  }
+];
+
+const mentors = [
+  {
+    id: 'mnt-aisha',
+    name: 'Aisha Chen',
+    title: 'Senior Frontend Engineer',
+    company: 'BrightLabs',
+    focusAreas: ['frontend', 'design systems', 'accessibility'],
+    skills: ['react', 'javascript', 'css', 'testing'],
+    timezone: 'UTC-5',
+    slotsPerWeek: 3
+  },
+  {
+    id: 'mnt-diego',
+    name: 'Diego Ramirez',
+    title: 'Product Designer',
+    company: 'StudioNorth',
+    focusAreas: ['ux research', 'portfolio reviews', 'prototyping'],
+    skills: ['figma', 'research', 'prototyping'],
+    timezone: 'UTC-6',
+    slotsPerWeek: 4
+  },
+  {
+    id: 'mnt-sara',
+    name: 'Sara Thompson',
+    title: 'Data Engineer',
+    company: 'DataForge',
+    focusAreas: ['data pipelines', 'sql', 'cloud'],
+    skills: ['python', 'sql', 'aws', 'docker'],
+    timezone: 'UTC-8',
+    slotsPerWeek: 2
+  },
+  {
+    id: 'mnt-nikhil',
+    name: 'Nikhil Gupta',
+    title: 'Machine Learning Lead',
+    company: 'Visionary AI',
+    focusAreas: ['ml', 'model deployment', 'career switches'],
+    skills: ['python', 'ml', 'pandas', 'numpy'],
+    timezone: 'UTC+1',
+    slotsPerWeek: 3
+  },
+  {
+    id: 'mnt-lena',
+    name: 'Lena Petrova',
+    title: 'DevOps Engineer',
+    company: 'CloudCurrent',
+    focusAreas: ['cloud foundations', 'observability', 'incident response'],
+    skills: ['aws', 'docker', 'ci/cd', 'scripting'],
+    timezone: 'UTC+2',
+    slotsPerWeek: 3
+  }
+];
+
+module.exports = { internships, mentors };

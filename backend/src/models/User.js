@@ -22,6 +22,10 @@ const UserSchema = new mongoose.Schema({
     required: [true, 'Role is required'],
     default: 'student'
   },
+  skills: {
+    type: [String],
+    default: []
+  },
   createdAt: {
     type: Date,
     default: Date.now
