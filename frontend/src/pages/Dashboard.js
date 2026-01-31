@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useCurrency } from '../context/CurrencyContext';
+import { useThemeMode } from '../context/ThemeModeContext';
 import { useNavigate } from 'react-router-dom';
 import {
   AppBar,
@@ -15,6 +16,7 @@ import {
   Grid,
   Avatar,
   IconButton,
+  Badge,
   Drawer,
   List,
   ListItem,
@@ -27,7 +29,12 @@ import {
   LinearProgress,
   TextField,
   MenuItem,
-  CircularProgress
+  CircularProgress,
+  Menu,
+  Switch,
+  FormControlLabel,
+  Tooltip,
+  InputAdornment
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -42,15 +49,25 @@ import {
   People as MentorIcon,
   CloudUpload as UploadIcon,
   Assessment as AssessmentIcon,
-  Psychology as CounselingIcon
+  Psychology as CounselingIcon,
+  Notifications as NotificationsIcon,
+  CalendarToday as CalendarTodayIcon,
+  Email as EmailIcon,
+  ViewKanban as ViewKanbanIcon,
+  DarkMode as DarkModeIcon,
+  LightMode as LightModeIcon,
+  Bookmark as BookmarkIcon
 } from '@mui/icons-material';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
   const { currency } = useCurrency();
+  const { mode, toggleMode } = useThemeMode();
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [appliedInternships, setAppliedInternships] = useState([]);
+  const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
+  const [alertsEnabled, setAlertsEnabled] = useState(true);
   const [companyJobs, setCompanyJobs] = useState([
     {
       id: 1,
@@ -125,6 +142,60 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
 
+  const notifications = [
+    { id: 1, title: 'New applicant for Frontend Developer Intern', time: '2h ago', role: 'company' },
+    { id: 2, title: 'Interview scheduled with Priya Sharma', time: '1d ago', role: 'company' },
+    { id: 3, title: '3 new internships match your profile', time: '3h ago', role: 'student' },
+    { id: 4, title: 'Resume parsed successfully', time: '1d ago', role: 'student' },
+    { id: 5, title: 'System maintenance on Sunday', time: '2d ago', role: 'all' }
+  ];
+
+  const savedJobs = [
+    { id: 1, title: 'UI/UX Design Intern', company: 'Adobe', location: 'Remote', stipend: 1200 },
+    { id: 2, title: 'Product Analyst Intern', company: 'Microsoft', location: 'Bangalore', stipend: 1500 },
+    { id: 3, title: 'Marketing Growth Intern', company: 'Spotify', location: 'London', stipend: 1100 }
+  ];
+
+  const assessmentModules = [
+    { id: 1, title: 'Frontend Fundamentals', duration: '45 mins', level: 'Intermediate' },
+    { id: 2, title: 'SQL & Data Analysis', duration: '60 mins', level: 'Advanced' },
+    { id: 3, title: 'Product Thinking', duration: '30 mins', level: 'Beginner' }
+  ];
+
+  const studentInterviews = [
+    { id: 1, company: 'Google', role: 'Product Intern', date: 'Feb 2, 10:30 AM' },
+    { id: 2, company: 'Netflix', role: 'Data Intern', date: 'Feb 5, 2:00 PM' }
+  ];
+
+  const companyAnalytics = [
+    { id: 1, label: 'Time to Hire', value: '18 days', progress: 72 },
+    { id: 2, label: 'Offer Acceptance', value: '78%', progress: 78 },
+    { id: 3, label: 'Qualified Candidates', value: '62%', progress: 62 },
+    { id: 4, label: 'Response Rate', value: '85%', progress: 85 }
+  ];
+
+  const pipelineStages = [
+    { id: 1, label: 'Applied', count: 42, candidates: ['Ava', 'Rohit', 'Ken'] },
+    { id: 2, label: 'Screening', count: 18, candidates: ['Meera', 'Jacob', 'Sara'] },
+    { id: 3, label: 'Interview', count: 9, candidates: ['Arjun', 'Liam'] },
+    { id: 4, label: 'Offer', count: 3, candidates: ['Nina'] }
+  ];
+
+  const interviewSchedule = [
+    { id: 1, candidate: 'Aarav Patel', role: 'Frontend Intern', date: 'Feb 1, 11:00 AM' },
+    { id: 2, candidate: 'Sophia Lee', role: 'Marketing Intern', date: 'Feb 3, 4:00 PM' }
+  ];
+
+  const emailTemplates = [
+    { id: 1, title: 'Interview Invite', description: 'Send calendar invite with meeting link.' },
+    { id: 2, title: 'Offer Letter', description: 'Share offer details and next steps.' },
+    { id: 3, title: 'Rejection Note', description: 'Close the loop respectfully.' }
+  ];
+
+  const visibleNotifications = notifications.filter(
+    (notification) => notification.role === 'all' || notification.role === user?.role
+  );
+
   useEffect(() => {
     if (!user) {
       navigate('/login');
@@ -173,6 +244,16 @@ const Dashboard = () => {
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
+
+  const handleOpenNotifications = (event) => {
+    setNotificationAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseNotifications = () => {
+    setNotificationAnchorEl(null);
+  };
+
+  const isNotificationOpen = Boolean(notificationAnchorEl);
 
   const handleApplyInternship = (internshipId) => {
     if (appliedInternships.includes(internshipId)) {
@@ -341,6 +422,18 @@ const Dashboard = () => {
             </Box>
           )}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
+            <Tooltip title="Notifications">
+              <IconButton color="inherit" onClick={handleOpenNotifications}>
+                <Badge badgeContent={visibleNotifications.length} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            </Tooltip>
+            <Tooltip title={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+              <IconButton color="inherit" onClick={toggleMode}>
+                {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+              </IconButton>
+            </Tooltip>
             <Avatar 
               sx={{ 
                 bgcolor: 'white',
@@ -380,6 +473,31 @@ const Dashboard = () => {
           </Box>
         </Toolbar>
       </AppBar>
+
+      <Menu
+        anchorEl={notificationAnchorEl}
+        open={isNotificationOpen}
+        onClose={handleCloseNotifications}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        PaperProps={{ sx: { width: 320 } }}
+      >
+        {visibleNotifications.length === 0 && (
+          <MenuItem onClick={handleCloseNotifications}>No new notifications</MenuItem>
+        )}
+        {visibleNotifications.map((notification) => (
+          <MenuItem key={notification.id} onClick={handleCloseNotifications}>
+            <Box>
+              <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                {notification.title}
+              </Typography>
+              <Typography variant="caption" color="textSecondary">
+                {notification.time}
+              </Typography>
+            </Box>
+          </MenuItem>
+        ))}
+      </Menu>
 
       {/* Sidebar Drawer */}
       <Drawer
@@ -527,7 +645,7 @@ const Dashboard = () => {
                     Recommended Internships for You
                   </Typography>
                   <Chip 
-                    label={`${studentData.recommendedInternships.length} matches`} 
+                    label={`${filteredInternships.length} matches`} 
                     sx={{ 
                       background: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)',
                       color: 'white',
@@ -535,15 +653,59 @@ const Dashboard = () => {
                     }} 
                   />
                 </Box>
+
+                <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ mb: 3 }}>
+                  <TextField
+                    fullWidth
+                    placeholder="Search by role or company"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon sx={{ color: '#6b7280' }} />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                  <TextField
+                    select
+                    fullWidth
+                    label="Category"
+                    value={categoryFilter}
+                    onChange={(e) => setCategoryFilter(e.target.value)}
+                  >
+                    {internshipCategories.map((category) => (
+                      <MenuItem key={category.value} value={category.value}>
+                        {category.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  <TextField
+                    fullWidth
+                    label="Preferred Location"
+                    placeholder="Remote, London, Bangalore"
+                  />
+                </Stack>
                 
                 {studentLoading ? (
                   <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
                     <CircularProgress />
                   </Box>
                 ) : (
-                  <Grid container spacing={{ xs: 2, sm: 3 }}>
-                    {studentData.recommendedInternships.map((internship) => (
-                      <Grid item xs={12} md={6} key={internship.id}>
+                  filteredInternships.length === 0 ? (
+                    <Box sx={{ py: 4, textAlign: 'center', color: 'text.secondary' }}>
+                      <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                        No matches found
+                      </Typography>
+                      <Typography variant="body2">
+                        Try adjusting your filters or search query.
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <Grid container spacing={{ xs: 2, sm: 3 }}>
+                      {filteredInternships.map((internship) => (
+                        <Grid item xs={12} md={6} key={internship.id}>
                         <Card 
                           variant="outlined" 
                           sx={{ 
@@ -704,9 +866,10 @@ const Dashboard = () => {
                             </Button>
                           </CardContent>
                         </Card>
-                      </Grid>
-                    ))}
-                  </Grid>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  )
                 )}
 
                 {studentError && (
@@ -716,6 +879,130 @@ const Dashboard = () => {
                 )}
               </CardContent>
             </Card>
+          )}
+
+          {user?.role === 'student' && (
+            <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: 4 }}>
+              <Grid item xs={12} md={6}>
+                <Card>
+                  <CardContent>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                      <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                        Saved Jobs & Alerts
+                      </Typography>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={alertsEnabled}
+                            onChange={(e) => setAlertsEnabled(e.target.checked)}
+                            color="primary"
+                          />
+                        }
+                        label="Job Alerts"
+                      />
+                    </Box>
+                    <Stack spacing={2}>
+                      {savedJobs.map((job) => (
+                        <Box key={job.id} sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                          <Avatar sx={{ bgcolor: '#eff6ff', color: '#2563eb', width: 40, height: 40 }}>
+                            <BookmarkIcon fontSize="small" />
+                          </Avatar>
+                          <Box sx={{ flex: 1 }}>
+                            <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                              {job.title}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary">
+                              {job.company} · {job.location} · {currency.symbol}{job.stipend}
+                            </Typography>
+                          </Box>
+                          <Button size="small" variant="outlined">View</Button>
+                        </Box>
+                      ))}
+                    </Stack>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Card>
+                  <CardContent>
+                    <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+                      Resume Parsing & Profile
+                    </Typography>
+                    <Button variant="outlined" startIcon={<UploadIcon />} sx={{ mb: 2 }}>
+                      Upload Resume
+                    </Button>
+                    <Divider sx={{ mb: 2 }} />
+                    <Typography variant="subtitle2" sx={{ mb: 1, color: 'text.secondary' }}>
+                      Parsed Highlights
+                    </Typography>
+                    <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mb: 1 }}>
+                      {['React', 'Node.js', 'SQL', 'Figma', 'Leadership'].map((skill) => (
+                        <Chip key={skill} label={skill} size="small" sx={{ mb: 1 }} />
+                      ))}
+                    </Stack>
+                    <Typography variant="body2" color="textSecondary">
+                      Completion Score: 82% · Add 2 more projects to reach 90%
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Card>
+                  <CardContent>
+                    <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+                      Skill Assessments
+                    </Typography>
+                    <Stack spacing={2}>
+                      {assessmentModules.map((assessment) => (
+                        <Box key={assessment.id} sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                          <Avatar sx={{ bgcolor: '#eef2ff', color: '#4f46e5', width: 40, height: 40 }}>
+                            <AssessmentIcon fontSize="small" />
+                          </Avatar>
+                          <Box sx={{ flex: 1 }}>
+                            <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                              {assessment.title}
+                            </Typography>
+                            <Typography variant="caption" color="textSecondary">
+                              {assessment.duration} · {assessment.level}
+                            </Typography>
+                          </Box>
+                          <Button size="small" variant="contained">Start</Button>
+                        </Box>
+                      ))}
+                    </Stack>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Card>
+                  <CardContent>
+                    <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+                      Interview Schedule
+                    </Typography>
+                    <Stack spacing={2}>
+                      {studentInterviews.map((interview) => (
+                        <Box key={interview.id} sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                          <Avatar sx={{ bgcolor: '#ecfdf3', color: '#059669', width: 40, height: 40 }}>
+                            <CalendarTodayIcon fontSize="small" />
+                          </Avatar>
+                          <Box>
+                            <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                              {interview.company} · {interview.role}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary">
+                              {interview.date}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      ))}
+                    </Stack>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
           )}
 
           {/* Company Job Management Section */}
@@ -847,6 +1134,134 @@ const Dashboard = () => {
 
               </CardContent>
             </Card>
+          )}
+
+          {user?.role === 'company' && (
+            <>
+              <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: 4 }}>
+                <Grid item xs={12} md={7}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+                        Analytics Dashboard
+                      </Typography>
+                      <Stack spacing={2}>
+                        {companyAnalytics.map((metric) => (
+                          <Box key={metric.id}>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                              <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                                {metric.label}
+                              </Typography>
+                              <Typography variant="body2" color="textSecondary">
+                                {metric.value}
+                              </Typography>
+                            </Box>
+                            <LinearProgress
+                              variant="determinate"
+                              value={metric.progress}
+                              sx={{
+                                height: 8,
+                                borderRadius: 4,
+                                backgroundColor: '#e5e7eb',
+                                '& .MuiLinearProgress-bar': {
+                                  background: 'linear-gradient(90deg, #2563eb 0%, #4f46e5 100%)',
+                                  borderRadius: 4
+                                }
+                              }}
+                            />
+                          </Box>
+                        ))}
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={12} md={5}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+                        Interview Schedule
+                      </Typography>
+                      <Stack spacing={2}>
+                        {interviewSchedule.map((interview) => (
+                          <Box key={interview.id} sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                            <Avatar sx={{ bgcolor: '#ecfdf3', color: '#059669', width: 40, height: 40 }}>
+                              <CalendarTodayIcon fontSize="small" />
+                            </Avatar>
+                            <Box>
+                              <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                                {interview.candidate}
+                              </Typography>
+                              <Typography variant="body2" color="textSecondary">
+                                {interview.role} · {interview.date}
+                              </Typography>
+                            </Box>
+                          </Box>
+                        ))}
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Grid>
+
+              <Card sx={{ mb: 4 }}>
+                <CardContent>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                    <ViewKanbanIcon color="primary" />
+                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                      Applicant Pipeline
+                    </Typography>
+                  </Box>
+                  <Grid container spacing={2}>
+                    {pipelineStages.map((stage) => (
+                      <Grid item xs={12} sm={6} md={3} key={stage.id}>
+                        <Box sx={{ p: 2, borderRadius: 2, bgcolor: 'background.default', border: '1px solid', borderColor: 'divider' }}>
+                          <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1 }}>
+                            {stage.label} · {stage.count}
+                          </Typography>
+                          <Stack spacing={1}>
+                            {stage.candidates.map((candidate, idx) => (
+                              <Box key={idx} sx={{ p: 1, bgcolor: 'background.paper', borderRadius: 1, border: '1px solid', borderColor: 'divider' }}>
+                                <Typography variant="body2">{candidate}</Typography>
+                              </Box>
+                            ))}
+                          </Stack>
+                        </Box>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </CardContent>
+              </Card>
+
+              <Card sx={{ mb: 4 }}>
+                <CardContent>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                    <EmailIcon color="primary" />
+                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                      Email Templates
+                    </Typography>
+                  </Box>
+                  <Grid container spacing={2}>
+                    {emailTemplates.map((template) => (
+                      <Grid item xs={12} md={4} key={template.id}>
+                        <Card variant="outlined" sx={{ height: '100%' }}>
+                          <CardContent>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                              {template.title}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                              {template.description}
+                            </Typography>
+                            <Button size="small" variant="outlined">
+                              Use Template
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </CardContent>
+              </Card>
+            </>
           )}
 
         </Container>
