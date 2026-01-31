@@ -6,22 +6,24 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 // Import components
 import { AuthProvider } from './context/AuthContext';
+import { CurrencyProvider } from './context/CurrencyContext';
 import PrivateRoute from './components/PrivateRoute';
 import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
+import HomePage from './pages/HomePage';
 
 // Create theme
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
-      light: '#42a5f5',
-      dark: '#1565c0',
+      main: '#2563eb',
+      light: '#60a5fa',
+      dark: '#1d4ed8',
     },
     secondary: {
-      main: '#9c27b0',
-      light: '#ba68c8',
-      dark: '#7b1fa2',
+      main: '#4f46e5',
+      light: '#818cf8',
+      dark: '#4338ca',
     },
     background: {
       default: '#f5f5f5',
@@ -65,9 +67,10 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AuthProvider>
-        <Router>
-          <Toaster 
+      <CurrencyProvider>
+        <AuthProvider>
+          <Router>
+            <Toaster 
             position="top-right"
             toastOptions={{
               duration: 4000,
@@ -85,6 +88,7 @@ function App() {
             }}
           />
           <Routes>
+            <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route 
               path="/dashboard" 
@@ -94,10 +98,10 @@ function App() {
                 </PrivateRoute>
               } 
             />
-            <Route path="/" element={<Navigate to="/dashboard" />} />
           </Routes>
         </Router>
       </AuthProvider>
+      </CurrencyProvider>
     </ThemeProvider>
   );
 }

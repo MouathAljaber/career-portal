@@ -12,9 +12,10 @@ import {
   ToggleButtonGroup,
   Alert,
   CircularProgress,
-  Divider
+  Divider,
+  IconButton
 } from '@mui/material';
-import { Google as GoogleIcon } from '@mui/icons-material';
+import { Google as GoogleIcon, ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 
 const LoginPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -84,11 +85,75 @@ const LoginPage = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{ mt: 8 }}>
-      <Paper elevation={3} sx={{ p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Typography component="h1" variant="h4" sx={{ mb: 3, color: '#1976d2' }}>
-          Career Portal
-        </Typography>
+    <Box sx={{ 
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      background: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 50%, #E0E7FF 100%)',
+      py: 4,
+      position: 'relative'
+    }}>
+      {/* Back to Home Button */}
+      <IconButton
+        onClick={() => navigate('/')}
+        sx={{
+          position: 'absolute',
+          top: 16,
+          left: 16,
+          backgroundColor: 'white',
+          boxShadow: 2,
+          '&:hover': {
+            backgroundColor: '#f3f4f6',
+            transform: 'translateX(-4px)'
+          },
+          transition: 'all 0.2s'
+        }}
+      >
+        <ArrowBackIcon />
+      </IconButton>
+      
+      <Container component="main" maxWidth="xs">
+        <Paper 
+          elevation={6} 
+          sx={{ 
+            p: { xs: 3, sm: 4 }, 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center',
+            borderRadius: 3
+          }}
+        >
+          <Box sx={{ 
+            mb: 3, 
+            textAlign: 'center',
+            width: '100%'
+          }}>
+            <Box sx={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 48,
+              height: 48,
+              borderRadius: 2,
+              background: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)',
+              mb: 2,
+              boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
+            }}>
+              <Typography variant="h4" sx={{ color: 'white', fontWeight: 700 }}>
+                E
+              </Typography>
+            </Box>
+            <Typography component="h1" variant="h4" sx={{ 
+              mb: 1,
+              fontWeight: 700,
+              background: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}>
+              Career Portal
+            </Typography>
+          </Box>
         
         <Typography component="h2" variant="h5" sx={{ mb: 2 }}>
           {isLogin ? 'Welcome Back' : 'Create Account'}
@@ -165,7 +230,16 @@ const LoginPage = () => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2, py: 1.5 }}
+            sx={{ 
+              mt: 3, 
+              mb: 2, 
+              py: 1.5,
+              background: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #1d4ed8 0%, #4338ca 100%)',
+                boxShadow: '0 4px 12px rgba(37, 99, 235, 0.4)'
+              }
+            }}
             disabled={loading}
           >
             {loading ? (
@@ -191,7 +265,15 @@ const LoginPage = () => {
           variant="outlined"
           startIcon={<GoogleIcon />}
           onClick={handleGoogleLogin}
-          sx={{ mb: 3 }}
+          sx={{ 
+            mb: 3,
+            borderColor: '#2563eb',
+            color: '#2563eb',
+            '&:hover': {
+              borderColor: '#1d4ed8',
+              backgroundColor: '#eff6ff'
+            }
+          }}
         >
           Continue with Google
         </Button>
@@ -207,7 +289,13 @@ const LoginPage = () => {
                 setIsLogin(!isLogin);
                 setError('');
               }}
-              sx={{ textTransform: 'none' }}
+              sx={{ 
+                textTransform: 'none',
+                color: '#2563eb',
+                '&:hover': {
+                  backgroundColor: '#eff6ff'
+                }
+              }}
             >
               {isLogin ? 'Sign Up' : 'Sign In'}
             </Button>
@@ -215,6 +303,7 @@ const LoginPage = () => {
         </Box>
       </Paper>
     </Container>
+    </Box>
   );
 };
 
