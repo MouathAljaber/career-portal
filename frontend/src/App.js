@@ -10,9 +10,11 @@ import PrivateRoute from './components/PrivateRoute';
 import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
 import HomePage from './pages/HomePage';
+import Logo from '../src/assets/logo.jpeg'
 
 function App() {
   return (
+    
     <ThemeModeProvider>
       <CurrencyProvider>
         <AuthProvider>
@@ -50,6 +52,7 @@ function App() {
       </AuthProvider>
       </CurrencyProvider>
     </ThemeModeProvider>
+    
   );
 }
 

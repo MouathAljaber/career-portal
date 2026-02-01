@@ -1,3 +1,4 @@
+import signature from "../../assets/Sign.png";
 import { Facebook, Twitter, Instagram, Linkedin, Youtube, Mail, Phone, MapPin } from 'lucide-react';
 
 const footerLinks = {
@@ -63,11 +64,11 @@ const Footer = () => {
               </a>
               <a href="tel:+919876543210" className="flex items-center gap-3 text-sm text-gray-400 hover:text-gray-200 transition-colors">
                 <Phone className="w-4 h-4" />
-                +91 98765 43210
+                +49 1776770131
               </a>
               <div className="flex items-center gap-3 text-sm text-gray-400">
                 <MapPin className="w-4 h-4 shrink-0" />
-                Bangalore, Karnataka, India
+                Germany
               </div>
             </div>
 
@@ -149,13 +150,22 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-gray-500">
-              © 2024 EVLEENE. All rights reserved.
+              © 2026 EVLEENE. All rights reserved.
             </p>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">Made with</span>
-              <span className="text-red-400">❤</span>
-              <span className="text-sm text-gray-500">in India</span>
-            </div>
+            {/* Subtle creator */}
+<div className="mt-10 flex flex-col items-center opacity-30">
+  <p className="text-xs text-gray-500 tracking-wide">
+    Created & Designed by
+  </p>
+
+  <img
+    src={signature}
+    alt="Creator Signature"
+    className="h-8 mt-1 grayscale"
+  />
+</div>
+
+            
           </div>
         </div>
       </div>

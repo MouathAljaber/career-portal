@@ -215,7 +215,7 @@ const Dashboard = () => {
       setStudentError('');
 
       try {
-        const response = await axios.get('http://localhost:5000/api/student/dashboard');
+        const response = await axios.get('http://localhost:5001/api/student/dashboard');
         if (!isMounted) return;
         setStudentData(response.data?.data);
       } catch (error) {
