@@ -20,15 +20,15 @@ const Companies = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-            Trusted by 500+ Companies
+            Opportunities from Startups, SMEs & Growing Companies
           </h2>
           <p className="text-gray-600 max-w-xl mx-auto">
-            Join thousands of students who landed internships at leading organizations
+            We focus on realistic opportunities — especially startups and mid-sized companies open to international talent.
           </p>
         </div>
 
         {/* Logo Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+       {/* <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {companies.map((company) => (
             <div
               key={company.name}
@@ -40,21 +40,22 @@ const Companies = () => {
               <span className="font-medium text-gray-900 text-sm">{company.name}</span>
             </div>
           ))}
-        </div>
+        </div>*/}
 
         {/* Trust indicators */}
         <div className="flex flex-wrap items-center justify-center gap-6 mt-10 pt-8 border-t border-gray-200">
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <div className="w-2 h-2 rounded-full bg-green-500" />
-            500+ Partner Companies
+            Verified listings
+
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <div className="w-2 h-2 rounded-full bg-blue-500" />
-            {currency.symbol}50M+ Monthly Stipends
+            Manually reviewed roles
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <div className="w-2 h-2 rounded-full bg-purple-500" />
-            Pan-India Opportunities
+            Germany-focused employers
           </div>
         </div>
       </div>

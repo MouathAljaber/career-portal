@@ -7,6 +7,8 @@ import Companies from '../components/homepage/Companies';
 import Testimonials from '../components/homepage/Testimonials';
 import CTA from '../components/homepage/CTA';
 import Footer from '../components/homepage/Footer';
+import Faq from '../components/homepage/Faq';
+import Eligibility from '../components/homepage/Eligibility';
 
 const HomePage = () => {
   return (
@@ -15,10 +17,12 @@ const HomePage = () => {
       <main>
         <Hero />
         <Categories />
+        <Eligibility/>
         <InternshipsSection />
         <HowItWorks />
         <Companies />
         <Testimonials />
+        <Faq/>
         <CTA />
       </main>
       <Footer />

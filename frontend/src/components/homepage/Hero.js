@@ -28,14 +28,18 @@ const Hero = () => {
 
           {/* Main heading */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-            Launch Your Career with
+            
             <span className="block mt-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              Premium Internships
+              Find Internships and Jobs in Germany
             </span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-600 mb-10 mx-auto">
             Discover 10,000+ internship opportunities from top companies. Your dream career starts here.
+          </p>
+
+          <p className="text-lg sm:text-xl text-gray-600 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text mb-10 max-w-2xl bg-clip-text text-transparent mx-auto">
+            For International and EU Students
           </p>
 
           {/* Search bar */}
@@ -66,8 +70,8 @@ const Hero = () => {
 
           {/* Quick links */}
           <div className="flex flex-wrap justify-center gap-2 mt-6">
-            <span className="text-sm text-gray-600">Popular:</span>
-            {['Software Development', 'Marketing', 'Data Science', 'Design', 'Finance'].map((tag) => (
+            {/* <span className="text-sm text-gray-600">Popular:</span> */}
+            {['🇩🇪 Germany-Based', '🌍 Open to International Students', '💶 Paid Internships', '📄 Visa-Friendly', '🗣 English-Friendly Roles'].map((tag) => (
               <button
                 key={tag}
                 className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors"
