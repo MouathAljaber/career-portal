@@ -68,7 +68,7 @@ const Dashboard = () => {
   const [appliedInternships, setAppliedInternships] = useState([]);
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
   const [alertsEnabled, setAlertsEnabled] = useState(true);
-  const [companyJobs, setCompanyJobs] = useState([
+  const [companyJobs] = useState([
     {
       id: 1,
       title: 'Frontend Developer Intern',
@@ -100,7 +100,7 @@ const Dashboard = () => {
       posted: '1 week ago'
     }
   ]);
-  const [dashboardData, setDashboardData] = useState({
+  const [dashboardData] = useState({
     student: {
       title: 'Student Dashboard',
       stats: [
