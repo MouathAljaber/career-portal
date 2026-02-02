@@ -1,6 +1,11 @@
 import { CheckCircle } from "lucide-react";
 
 const Eligibility = () => {
+  const handleCheckEligibility = () => {
+    const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdohvbiKVKNcl56vt_f1U9Vvb49KpQ8uqfFVSYNqNR3ut2cHQ/viewform";
+    window.open(googleFormUrl, '_blank');
+  };
+
   return (
     <section className="py-16 lg:py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,7 +37,10 @@ const Eligibility = () => {
             </ul>
 
             {/* BRAND BUTTON */}
-            <button className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:opacity-90 text-white font-medium py-2.5 rounded-lg transition">
+            <button 
+              onClick={handleCheckEligibility}
+              className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:opacity-90 text-white font-medium py-2.5 rounded-lg transition"
+            >
               Check My Eligibility
             </button>
           </div>

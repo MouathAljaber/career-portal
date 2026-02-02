@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import FilterSidebar from './FilterSidebar';
 import FilterTopBar from './FilterTopBar';
 import FeaturedInternships from './FeaturedInternships';
@@ -6,6 +6,19 @@ import { SlidersHorizontal } from 'lucide-react';
 
 const InternshipsSection = () => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    stipendRange: [0, 4000],
+    locations: [],
+    categories: [],
+    workTypes: [],
+    durations: [],
+    activelyHiring: false,
+    sortBy: 'latest'
+  });
+
+  // Count filtered internships (we'll pass this to FilterTopBar)
+  const [filteredCount, setFilteredCount] = useState(12);
+  const [viewMode, setViewMode] = useState('grid');
 
   return (
     <section className="py-16 lg:py-20" id="internships">
@@ -34,7 +47,7 @@ const InternshipsSection = () => {
           {/* Desktop Sidebar */}
           <aside className="hidden lg:block w-72 shrink-0">
             <div className="sticky top-24">
-              <FilterSidebar />
+              <FilterSidebar filters={filters} setFilters={setFilters} />
             </div>
           </aside>
 
@@ -42,11 +55,11 @@ const InternshipsSection = () => {
           <div className="flex-1 min-w-0">
             {isMobileFilterOpen && (
               <div className="mb-6 lg:hidden">
-                <FilterSidebar />
+                <FilterSidebar filters={filters} setFilters={setFilters} />
               </div>
             )}
-            <FilterTopBar />
-            <FeaturedInternships />
+            <FilterTopBar filters={filters} setFilters={setFilters} totalCount={filteredCount} viewMode={viewMode} setViewMode={setViewMode} />
+            <FeaturedInternships filters={filters} setFilteredCount={setFilteredCount} viewMode={viewMode} />
           </div>
         </div>
       </div>

@@ -1,6 +1,52 @@
-import { Search, MapPin, Briefcase, Users, Building2, Star } from 'lucide-react';
+import { Search, MapPin, Briefcase } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+
+const germanCities = [
+  'Berlin',
+  'Munich',
+  'Frankfurt',
+  'Hamburg',
+  'Cologne',
+  'Stuttgart',
+  'Remote'
+];
 
 const Hero = () => {
+  const navigate = useNavigate();
+  const [jobTitle, setJobTitle] = useState('');
+  const [city, setCity] = useState('');
+  const [showCitySuggestions, setShowCitySuggestions] = useState(false);
+
+  const handleSearch = () => {
+    if (!jobTitle.trim() && !city.trim()) {
+      toast.error('Please enter a job title or city');
+      return;
+    }
+    
+    const searchParams = new URLSearchParams();
+    if (jobTitle) searchParams.append('title', jobTitle);
+    if (city) searchParams.append('city', city);
+    
+    toast.success(`Searching for "${jobTitle}" in ${city || 'all cities'}...`);
+    navigate(`/search?${searchParams.toString()}`);
+  };
+
+  const handleCitySelect = (selectedCity) => {
+    setCity(selectedCity);
+    setShowCitySuggestions(false);
+  };
+
+  const handleCityChange = (e) => {
+    const value = e.target.value;
+    setCity(value);
+    setShowCitySuggestions(true);
+  };
+
+  const filteredCities = germanCities.filter(c => 
+    c.toLowerCase().includes(city.toLowerCase())
+  );
   return (
     <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 overflow-hidden">
       {/* Background gradient */}
@@ -10,22 +56,6 @@ const Hero = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Trust badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 border border-blue-200 mb-6">
-            <div className="flex -space-x-2">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 border-2 border-white" />
-              ))}
-            </div>
-            <span className="text-sm font-medium text-gray-800">
-              Join 50,000+ students already hired
-            </span>
-            <div className="flex items-center gap-0.5">
-              <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-              <span className="text-sm font-semibold">4.9</span>
-            </div>
-          </div>
-
           {/* Main heading */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
             
@@ -35,7 +65,7 @@ const Hero = () => {
           </h1>
 
           <p className="text-lg sm:text-xl text-gray-600 mb-10 mx-auto">
-            Discover 10,000+ internship opportunities from top companies. Your dream career starts here.
+            Discover 1,000+ internship opportunities from top companies. Your dream career starts here.
           </p>
 
           <p className="text-lg sm:text-xl text-gray-600 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text mb-10 max-w-2xl bg-clip-text text-transparent mx-auto">
@@ -44,12 +74,15 @@ const Hero = () => {
 
           {/* Search bar */}
           <div className="bg-white rounded-2xl p-2 shadow-lg border border-gray-200 max-w-3xl mx-auto">
-            <div className="flex flex-col sm:flex-row gap-2">
+            <div className="flex flex-col sm:flex-row gap-3 items-stretch">
               <div className="relative flex-1">
                 <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Job title, keyword, or company"
+                  value={jobTitle}
+                  onChange={(e) => setJobTitle(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                   className="pl-12 h-12 border-0 bg-gray-100 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -58,53 +91,47 @@ const Hero = () => {
                 <input
                   type="text"
                   placeholder="City or remote"
+                  value={city}
+                  onChange={handleCityChange}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                   className="pl-12 h-12 border-0 bg-gray-100 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+                {showCitySuggestions && city && filteredCities.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
+                    {filteredCities.map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => handleCitySelect(c)}
+                        className="w-full text-left px-4 py-2 hover:bg-blue-50 text-gray-700 first:rounded-t-lg last:rounded-b-lg"
+                      >
+                        📍 {c}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-              <button className="h-12 px-8 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors font-medium flex items-center justify-center gap-2 shadow-sm">
+              <button 
+                onClick={handleSearch}
+                className="h-12 px-8 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-semibold flex items-center justify-center gap-2 shadow-md whitespace-nowrap"
+              >
                 <Search className="w-5 h-5" />
                 Search
               </button>
             </div>
           </div>
 
-          {/* Quick links */}
+          {/* Quick info badges */}
           <div className="flex flex-wrap justify-center gap-2 mt-6">
-            {/* <span className="text-sm text-gray-600">Popular:</span> */}
             {['🇩🇪 Germany-Based', '🌍 Open to International Students', '💶 Paid Internships', '📄 Visa-Friendly', '🗣 English-Friendly Roles'].map((tag) => (
-              <button
+              <span
                 key={tag}
-                className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors"
+                className="text-sm text-blue-600 px-3 py-1 bg-blue-50 rounded-full"
               >
                 {tag}
-              </button>
+              </span>
             ))}
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-8 mt-16 pt-10 border-t border-gray-200 max-w-2xl mx-auto">
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <Briefcase className="w-5 h-5 text-blue-600" />
-                <span className="text-2xl sm:text-3xl font-bold text-gray-900">10K+</span>
-              </div>
-              <p className="text-sm text-gray-600">Active Internships</p>
-            </div>
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <Building2 className="w-5 h-5 text-blue-600" />
-                <span className="text-2xl sm:text-3xl font-bold text-gray-900">500+</span>
-              </div>
-              <p className="text-sm text-gray-600">Partner Companies</p>
-            </div>
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <Users className="w-5 h-5 text-blue-600" />
-                <span className="text-2xl sm:text-3xl font-bold text-gray-900">50K+</span>
-              </div>
-              <p className="text-sm text-gray-600">Students Placed</p>
-            </div>
-          </div>
         </div>
       </div>
     </section>

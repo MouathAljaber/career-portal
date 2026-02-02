@@ -7,14 +7,40 @@ const quickFilters = [
   { id: 'actively-hiring', label: 'Actively Hiring', icon: Zap },
 ];
 
-const FilterTopBar = () => {
-  const [viewMode, setViewMode] = useState('grid');
-  const [activeFilters, setActiveFilters] = useState([]);
+const FilterTopBar = ({ filters, setFilters, totalCount, viewMode, setViewMode }) => {
+  const [sortBy, setSortBy] = useState('latest');
 
-  const toggleFilter = (filterId) => {
-    setActiveFilters((prev) =>
-      prev.includes(filterId) ? prev.filter((f) => f !== filterId) : [...prev, filterId]
-    );
+  const toggleQuickFilter = (filterId) => {
+    if (filterId === 'remote') {
+      // Toggle Remote work type
+      const currentWorkTypes = filters.workTypes;
+      const newWorkTypes = currentWorkTypes.includes('Remote')
+        ? currentWorkTypes.filter(t => t !== 'Remote')
+        : [...currentWorkTypes, 'Remote'];
+      setFilters({ ...filters, workTypes: newWorkTypes });
+    } else if (filterId === 'high-stipend') {
+      // Set high stipend range (e.g., 1200-4000)
+      setFilters({ ...filters, stipendRange: [1200, 4000] });
+    } else if (filterId === 'actively-hiring') {
+      // Could be used to filter by isHot or isNew - for now toggle isHot
+      setFilters({ ...filters, activelyHiring: !filters.activelyHiring });
+    }
+  };
+
+  const isFilterActive = (filterId) => {
+    if (filterId === 'remote') {
+      return filters.workTypes.includes('Remote');
+    } else if (filterId === 'high-stipend') {
+      return filters.stipendRange[0] >= 1200;
+    } else if (filterId === 'actively-hiring') {
+      return filters.activelyHiring;
+    }
+    return false;
+  };
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+    setFilters({ ...filters, sortBy: e.target.value });
   };
 
   return (
@@ -25,9 +51,9 @@ const FilterTopBar = () => {
           {quickFilters.map((filter) => (
             <button
               key={filter.id}
-              onClick={() => toggleFilter(filter.id)}
+              onClick={() => toggleQuickFilter(filter.id)}
               className={`h-8 text-xs px-3 rounded-lg font-medium transition-colors flex items-center gap-1.5 ${
-                activeFilters.includes(filter.id)
+                isFilterActive(filter.id)
                   ? 'bg-blue-600 text-white'
                   : 'border border-gray-300 text-gray-700 hover:border-blue-400'
               }`}
@@ -40,12 +66,14 @@ const FilterTopBar = () => {
 
         {/* Sort & View Controls */}
         <div className="flex items-center gap-3">
-          <select className="h-8 px-3 text-xs border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+          <select 
+            value={sortBy}
+            onChange={handleSortChange}
+            className="h-8 px-3 text-xs border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
             <option value="latest">Latest First</option>
             <option value="stipend-high">Stipend: High to Low</option>
             <option value="stipend-low">Stipend: Low to High</option>
             <option value="applicants">Most Applied</option>
-            <option value="deadline">Deadline Soon</option>
           </select>
 
           <div className="hidden sm:flex items-center border border-gray-300 rounded-lg p-0.5">
@@ -72,10 +100,7 @@ const FilterTopBar = () => {
       {/* Results count */}
       <div className="mt-3 pt-3 border-t border-gray-200">
         <p className="text-sm text-gray-600">
-          Showing <span className="font-medium text-gray-900">2,847</span> internships
-          {activeFilters.length > 0 && (
-            <span> with {activeFilters.length} filter{activeFilters.length > 1 ? 's' : ''} applied</span>
-          )}
+          Showing <span className="font-medium text-gray-900">{totalCount}</span> internships
         </p>
       </div>
     </div>

@@ -2,32 +2,17 @@ import signature from "../../assets/Sign.png";
 import { Facebook, Twitter, Instagram, Linkedin, Youtube, Mail, Phone, MapPin } from 'lucide-react';
 
 const footerLinks = {
-  forStudents: [
-    { label: 'Browse Internships', href: '#' },
-    { label: 'Create Profile', href: '#' },
-    { label: 'Career Resources', href: '#' },
-    { label: 'Resume Builder', href: '#' },
-    { label: 'Interview Tips', href: '#' },
-  ],
-  forEmployers: [
-    { label: 'Post Internship', href: '#' },
-    { label: 'Browse Candidates', href: '#' },
-    { label: 'Pricing Plans', href: '#' },
-    { label: 'Employer Dashboard', href: '#' },
-    { label: 'Success Stories', href: '#' },
-  ],
   company: [
-    { label: 'About Us', href: '#' },
-    { label: 'Contact', href: '#' },
-    { label: 'Blog', href: '#' },
-    { label: 'Press', href: '#' },
-    { label: 'Careers', href: '#' },
+    { label: 'About Us', href: '/about' },
+    { label: 'Contact', href: '/kontakt' },
+    { label: 'Blog', href: '/blog' },
   ],
   legal: [
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Terms of Service', href: '#' },
-    { label: 'Cookie Policy', href: '#' },
-    { label: 'Refund Policy', href: '#' },
+    { label: 'Imprint', href: '/impressum' },
+    { label: 'Privacy Policy', href: '/datenschutz' },
+    { label: 'Terms of Service', href: '/agb' },
+    { label: 'Cookie Policy', href: '/cookies' },
+    { label: 'Disclaimer', href: '/haftungsausschluss' },
   ],
 };
 
@@ -41,7 +26,7 @@ const socialLinks = [
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-100">
+    <footer id="contact" className="bg-gray-900 text-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
           {/* Brand */}
@@ -53,7 +38,7 @@ const Footer = () => {
               <span className="text-2xl font-bold text-white">EVLEENE</span>
             </a>
             <p className="text-gray-400 text-sm mb-6 max-w-xs leading-relaxed">
-              India's leading internship platform connecting talented students with top companies across the nation.
+              Germany's leading internship platform connecting talented students with top companies across the nation.
             </p>
 
             {/* Contact Info */}
@@ -78,41 +63,13 @@ const Footer = () => {
                 <a
                   key={social.label}
                   href={social.href}
-                  className="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition-colors"
+                  className="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center ring-1 ring-white/10 text-gray-300 hover:text-white hover:bg-blue-600 transition-colors"
                   aria-label={social.label}
                 >
-                  <social.icon className="w-4 h-4" />
+                  <social.icon className="w-4 h-4" strokeWidth={1.75} />
                 </a>
               ))}
             </div>
-          </div>
-
-          {/* For Students */}
-          <div>
-            <h4 className="font-semibold text-gray-100 mb-4 text-sm">For Students</h4>
-            <ul className="space-y-3">
-              {footerLinks.forStudents.map((link) => (
-                <li key={link.label}>
-                  <a href={link.href} className="text-sm text-gray-400 hover:text-gray-200 transition-colors">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* For Employers */}
-          <div>
-            <h4 className="font-semibold text-gray-100 mb-4 text-sm">For Employers</h4>
-            <ul className="space-y-3">
-              {footerLinks.forEmployers.map((link) => (
-                <li key={link.label}>
-                  <a href={link.href} className="text-sm text-gray-400 hover:text-gray-200 transition-colors">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
           </div>
 
           {/* Company */}
