@@ -6,6 +6,7 @@ import HowItWorks from '../components/homepage/HowItWorks';
 import Companies from '../components/homepage/Companies';
 import Testimonials from '../components/homepage/Testimonials';
 import Faq from '../components/homepage/Faq';
+import Eligibility from '../components/homepage/Eligibility';
 import CTA from '../components/homepage/CTA';
 import Footer from '../components/homepage/Footer';
 
@@ -21,6 +22,7 @@ const HomePage = () => {
         <Companies />
         <Testimonials />
         <Faq />
+        <Eligibility />
         <CTA />
       </main>
       <Footer />
