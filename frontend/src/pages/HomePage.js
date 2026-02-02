@@ -5,6 +5,7 @@ import InternshipsSection from '../components/homepage/InternshipsSection';
 import HowItWorks from '../components/homepage/HowItWorks';
 import Companies from '../components/homepage/Companies';
 import Testimonials from '../components/homepage/Testimonials';
+import Faq from '../components/homepage/Faq';
 import CTA from '../components/homepage/CTA';
 import Footer from '../components/homepage/Footer';
 
@@ -19,6 +20,7 @@ const HomePage = () => {
         <HowItWorks />
         <Companies />
         <Testimonials />
+        <Faq />
         <CTA />
       </main>
       <Footer />
