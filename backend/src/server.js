@@ -17,6 +17,8 @@ app.use(express.json());
 const authRoutes = require('./routes/authRoutes');
 const studentRoutes = require('./routes/studentRoutes');
 const mentorRoutes = require('./routes/mentorRoutes');
+const internshipRoutes = require('./routes/internshipRoutes');
+const talentPoolRoutes = require('./routes/talentPoolRoutes');
 
 // Basic test route (before DB connection)
 app.get('/health', (req, res) => {
@@ -24,7 +26,7 @@ app.get('/health', (req, res) => {
     success: true,
     message: 'Server is running',
     timestamp: new Date(),
-    database: 'Connecting...'
+    database: 'Connecting...',
   });
 });
 
@@ -32,12 +34,14 @@ app.get('/health', (req, res) => {
 connectDB()
   .then(() => {
     console.log('📁 Loading routes after successful database connection...');
-    
+
     // Mount routes
     app.use('/api/auth', authRoutes);
     app.use('/api/student', studentRoutes);
     app.use('/api/mentors', mentorRoutes);
-    
+    app.use('/api/internships', internshipRoutes);
+    app.use('/api/talent-pool', talentPoolRoutes);
+
     // Root endpoint
     app.get('/', (req, res) => {
       res.json({
@@ -51,37 +55,37 @@ connectDB()
           auth: {
             register: 'POST /api/auth/register',
             login: 'POST /api/auth/login',
-            getMe: 'GET /api/auth/me (protected)'
+            getMe: 'GET /api/auth/me (protected)',
           },
           student: {
-            dashboard: 'GET /api/student/dashboard (protected, student role)'
+            dashboard: 'GET /api/student/dashboard (protected, student role)',
           },
           mentors: {
-            list: 'GET /api/mentors (protected)'
+            list: 'GET /api/mentors (protected)',
           },
-          health: 'GET /health'
-        }
+          health: 'GET /health',
+        },
       });
     });
-    
+
     // 404 handler
     app.use('*', (req, res) => {
       res.status(404).json({
         success: false,
-        message: 'Route not found'
+        message: 'Route not found',
       });
     });
-    
+
     // Error handler
     app.use((err, req, res, next) => {
       console.error('Server error:', err.stack);
       res.status(500).json({
         success: false,
         message: 'Server error',
-        error: process.env.NODE_ENV === 'development' ? err.message : {}
+        error: process.env.NODE_ENV === 'development' ? err.message : {},
       });
     });
-    
+
     // Start server
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {

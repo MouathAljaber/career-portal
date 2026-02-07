@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import FilterSidebar from './FilterSidebar';
 import FilterTopBar from './FilterTopBar';
 import FeaturedInternships from './FeaturedInternships';
@@ -13,7 +13,7 @@ const InternshipsSection = () => {
     workTypes: [],
     durations: [],
     activelyHiring: false,
-    sortBy: 'latest'
+    sortBy: 'latest',
   });
 
   // Count filtered internships (we'll pass this to FilterTopBar)
@@ -28,7 +28,7 @@ const InternshipsSection = () => {
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               Discover Internships
             </h2>
-            <p className="text-gray-600">
+            <p className="text-gray-800 font-medium">
               Browse through thousands of opportunities tailored for you
             </p>
           </div>
@@ -58,8 +58,18 @@ const InternshipsSection = () => {
                 <FilterSidebar filters={filters} setFilters={setFilters} />
               </div>
             )}
-            <FilterTopBar filters={filters} setFilters={setFilters} totalCount={filteredCount} viewMode={viewMode} setViewMode={setViewMode} />
-            <FeaturedInternships filters={filters} setFilteredCount={setFilteredCount} viewMode={viewMode} />
+            <FilterTopBar
+              filters={filters}
+              setFilters={setFilters}
+              totalCount={filteredCount}
+              viewMode={viewMode}
+              setViewMode={setViewMode}
+            />
+            <FeaturedInternships
+              filters={filters}
+              setFilteredCount={setFilteredCount}
+              viewMode={viewMode}
+            />
           </div>
         </div>
       </div>

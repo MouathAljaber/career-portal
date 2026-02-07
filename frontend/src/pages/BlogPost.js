@@ -10,11 +10,11 @@ const BlogPost = () => {
 
   const blogPosts = {
     1: {
-      title: "5 Tips to Ace Your Internship Interview",
-      author: "Sarah Johnson",
-      date: "February 1, 2026",
-      category: "Career Tips",
-      image: "bg-gradient-to-br from-blue-400 to-blue-600",
+      title: '5 Tips to Ace Your Internship Interview',
+      author: 'Sarah Johnson',
+      date: 'February 1, 2026',
+      category: 'Career Tips',
+      image: 'bg-gradient-to-br from-blue-400 to-blue-600',
       content: `
         <p>Preparing for an internship interview can be daunting, but with the right approach and mindset, you can impress your potential employer. Here are five essential tips to help you ace your internship interview.</p>
         
@@ -34,14 +34,14 @@ const BlogPost = () => {
         <p>Send a thank-you email within 24 hours of your interview. Reference specific points from your conversation and reiterate your interest in the position. This leaves a positive lasting impression.</p>
         
         <p className="mt-6">Remember, interviewers want to learn about you as much as you want to learn about the company. Be authentic, enthusiastic, and ready to discuss how your skills and interests align with the internship role. Good luck!</p>
-      `
+      `,
     },
     2: {
-      title: "German Work Culture: What International Students Should Know",
-      author: "Michael Weber",
-      date: "January 28, 2026",
-      category: "Culture",
-      image: "bg-gradient-to-br from-red-400 to-red-600",
+      title: 'German Work Culture: What International Students Should Know',
+      author: 'Michael Weber',
+      date: 'January 28, 2026',
+      category: 'Culture',
+      image: 'bg-gradient-to-br from-red-400 to-red-600',
       content: `
         <p>Interning in Germany? Understanding German work culture is key to making a great impression. Here's what you need to know about working in this professional environment.</p>
         
@@ -59,14 +59,14 @@ const BlogPost = () => {
         
         <h3 className="text-2xl font-bold text-gray-900 mt-6 mb-4">Quality and Attention to Detail</h3>
         <p>German companies pride themselves on quality and precision. Pay attention to details in your work, as this is highly valued in German corporate culture.</p>
-      `
+      `,
     },
     3: {
       title: "Building Your Portfolio: A Student's Guide",
-      author: "Emma Schmidt",
-      date: "January 25, 2026",
-      category: "Professional Development",
-      image: "bg-gradient-to-br from-purple-400 to-purple-600",
+      author: 'Emma Schmidt',
+      date: 'January 25, 2026',
+      category: 'Professional Development',
+      image: 'bg-gradient-to-br from-purple-400 to-purple-600',
       content: `
         <p>Your portfolio is your chance to showcase your skills and work to potential employers. Here's a comprehensive guide to building a portfolio that stands out.</p>
         
@@ -84,14 +84,14 @@ const BlogPost = () => {
         
         <h3 className="text-2xl font-bold text-gray-900 mt-6 mb-4">Keep It Updated</h3>
         <p>Regularly update your portfolio with new projects and achievements. Remove outdated work and replace it with more recent and relevant pieces to keep your portfolio fresh and current.</p>
-      `
+      `,
     },
     4: {
-      title: "Networking Tips for Internship Success",
-      author: "David Mueller",
-      date: "January 20, 2026",
-      category: "Networking",
-      image: "bg-gradient-to-br from-green-400 to-green-600",
+      title: 'Networking Tips for Internship Success',
+      author: 'David Mueller',
+      date: 'January 20, 2026',
+      category: 'Networking',
+      image: 'bg-gradient-to-br from-green-400 to-green-600',
       content: `
         <p>Networking during your internship can open doors to future opportunities. Here are practical tips to help you build meaningful professional relationships.</p>
         
@@ -109,14 +109,14 @@ const BlogPost = () => {
         
         <h3 className="text-2xl font-bold text-gray-900 mt-6 mb-4">Offer Value</h3>
         <p>Networking isn't one-sided. Look for ways to help others, share useful information, or make introductions. Building a network is about mutual benefit and support.</p>
-      `
+      `,
     },
     5: {
-      title: "Remote Internships: Maximize Your Remote Work Experience",
-      author: "Lisa Wagner",
-      date: "January 15, 2026",
-      category: "Remote Work",
-      image: "bg-gradient-to-br from-indigo-400 to-indigo-600",
+      title: 'Remote Internships: Maximize Your Remote Work Experience',
+      author: 'Lisa Wagner',
+      date: 'January 15, 2026',
+      category: 'Remote Work',
+      image: 'bg-gradient-to-br from-indigo-400 to-indigo-600',
       content: `
         <p>Remote internships offer flexibility and unique opportunities. Here's how to make the most of your remote internship experience.</p>
         
@@ -134,14 +134,14 @@ const BlogPost = () => {
         
         <h3 className="text-2xl font-bold text-gray-900 mt-6 mb-4">Stay Connected with Your Team</h3>
         <p>Participate in virtual team activities and informal chats. Remote work can feel isolating, so make an effort to connect with your colleagues beyond work tasks.</p>
-      `
+      `,
     },
     6: {
-      title: "Tech Skills Every Intern Should Learn in 2026",
-      author: "Alex Bauer",
-      date: "January 10, 2026",
-      category: "Technology",
-      image: "bg-gradient-to-br from-yellow-400 to-yellow-600",
+      title: 'Tech Skills Every Intern Should Learn in 2026',
+      author: 'Alex Bauer',
+      date: 'January 10, 2026',
+      category: 'Technology',
+      image: 'bg-gradient-to-br from-yellow-400 to-yellow-600',
       content: `
         <p>The tech landscape is constantly evolving. Here are the essential tech skills that will make you stand out as an intern in 2026.</p>
         
@@ -159,8 +159,8 @@ const BlogPost = () => {
         
         <h3 className="text-2xl font-bold text-gray-900 mt-6 mb-4">Cybersecurity Awareness</h3>
         <p>Understanding cybersecurity basics, data protection, and secure coding practices is crucial in today's environment. This knowledge is relevant across all technical roles.</p>
-      `
-    }
+      `,
+    },
   };
 
   const post = blogPosts[id];
@@ -235,15 +235,13 @@ const BlogPost = () => {
           </div>
 
           {/* Title */}
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-8">
-            {post.title}
-          </h1>
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-8">{post.title}</h1>
 
           {/* Share Button */}
           <div className="flex gap-3 mb-8 pb-8 border-b border-gray-200">
             <button
               onClick={handleShare}
-              className="flex items-center gap-2 px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 text-primary-600 border border-primary-600 rounded-lg hover:bg-primary-50 transition-all duration-200 font-medium"
             >
               <Share2 className="w-4 h-4" />
               Share
@@ -256,8 +254,10 @@ const BlogPost = () => {
           </div>
 
           {/* CTA */}
-          <div className="mt-16 p-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Ready to find your next internship?</h3>
+          <div className="mt-16 p-8 bg-blue-50 rounded-xl border border-blue-100">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              Ready to find your next internship?
+            </h3>
             <p className="text-gray-600 mb-6">
               Join thousands of students already finding their dream internships on EVLEENE.
             </p>

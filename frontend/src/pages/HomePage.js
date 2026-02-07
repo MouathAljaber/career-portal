@@ -16,12 +16,12 @@ const HomePage = () => {
       <main>
         <Hero />
         <Categories />
-        <Eligibility/>
+        <Eligibility />
         <InternshipsSection />
         <HowItWorks />
         <Companies />
         <Testimonials />
-        <Faq/>
+        <Faq />
       </main>
       <Footer />
     </div>

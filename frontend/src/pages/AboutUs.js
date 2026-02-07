@@ -23,10 +23,14 @@ const AboutUs = () => {
         {/* Hero Section */}
         <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-            About <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">EVLEENE</span>
+            About{' '}
+            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              EVLEENE
+            </span>
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            Germany's leading internship platform connecting talented students with top companies across Europe.
+            Germany's leading internship platform connecting talented students with top companies
+            across Europe.
           </p>
         </section>
 
@@ -34,10 +38,14 @@ const AboutUs = () => {
         <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
           <p className="text-lg text-gray-600 leading-relaxed mb-6">
-            At EVLEENE, our mission is to bridge the gap between exceptional students and innovative companies. We believe that meaningful internship experiences are the foundation for successful careers and thriving organizations.
+            At EVLEENE, our mission is to bridge the gap between exceptional students and innovative
+            companies. We believe that meaningful internship experiences are the foundation for
+            successful careers and thriving organizations.
           </p>
           <p className="text-lg text-gray-600 leading-relaxed">
-            We're committed to creating opportunities that empower the next generation of professionals while helping companies discover and nurture top talent from across Europe.
+            We're committed to creating opportunities that empower the next generation of
+            professionals while helping companies discover and nurture top talent from across
+            Europe.
           </p>
         </section>
 
@@ -52,9 +60,12 @@ const AboutUs = () => {
                   <Target className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Connect Talent with Opportunity</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    Connect Talent with Opportunity
+                  </h3>
                   <p className="text-gray-700">
-                    Create meaningful connections between talented students and companies that can transform their careers and contribute to their growth.
+                    Create meaningful connections between talented students and companies that can
+                    transform their careers and contribute to their growth.
                   </p>
                 </div>
               </div>
@@ -69,7 +80,8 @@ const AboutUs = () => {
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">Empower Students</h3>
                   <p className="text-gray-700">
-                    Equip students with real-world experience, professional development tools, and mentorship to launch successful careers.
+                    Equip students with real-world experience, professional development tools, and
+                    mentorship to launch successful careers.
                   </p>
                 </div>
               </div>
@@ -82,9 +94,12 @@ const AboutUs = () => {
                   <Zap className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Support Company Growth</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    Support Company Growth
+                  </h3>
                   <p className="text-gray-700">
-                    Help companies find dedicated, skilled interns and future employees to drive innovation and achieve business goals.
+                    Help companies find dedicated, skilled interns and future employees to drive
+                    innovation and achieve business goals.
                   </p>
                 </div>
               </div>
@@ -99,7 +114,8 @@ const AboutUs = () => {
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">Build a Community</h3>
                   <p className="text-gray-700">
-                    Create a vibrant community where students and professionals can network, learn, and grow together.
+                    Create a vibrant community where students and professionals can network, learn,
+                    and grow together.
                   </p>
                 </div>
               </div>
@@ -141,9 +157,9 @@ const AboutUs = () => {
             <p className="text-blue-100 text-lg mb-6">
               Join thousands of students already finding their dream internships on EVLEENE.
             </p>
-            <button 
+            <button
               onClick={() => navigate('/login')}
-              className="inline-block px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
+              className="inline-block px-8 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-gray-50 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0"
             >
               Get Started Today
             </button>

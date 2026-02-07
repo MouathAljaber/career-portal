@@ -1,9 +1,11 @@
 import React from 'react';
+import Header from '../components/homepage/Header';
 import Footer from '../components/homepage/Footer';
 
-const Datenschutz = () => {
+const Privacy = () => {
   return (
     <div className="min-h-screen bg-gray-50">
+      <Header />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">Privacy Policy</h1>
         <p className="text-sm text-gray-500 mb-8">Last updated: 02/02/2026</p>
@@ -18,27 +20,45 @@ const Datenschutz = () => {
 
           <section>
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Data processed</h2>
-            <p>We process personal data you provide when using the platform (e.g., name, email, resume, application data) as well as technical usage data (e.g., IP address, device and browser data).</p>
+            <p>
+              We process personal data you provide when using the platform (e.g., name, email,
+              resume, application data) as well as technical usage data (e.g., IP address, device
+              and browser data).
+            </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Purposes and legal bases</h2>
-            <p>Processing is carried out to provide the platform, enable communication, manage applications, and ensure security and optimization. Legal bases include Art. 6(1)(b) and (f) GDPR.</p>
+            <p>
+              Processing is carried out to provide the platform, enable communication, manage
+              applications, and ensure security and optimization. Legal bases include Art. 6(1)(b)
+              and (f) GDPR.
+            </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Retention</h2>
-            <p>We store personal data only as long as necessary for the respective purposes or as required by statutory retention obligations.</p>
+            <p>
+              We store personal data only as long as necessary for the respective purposes or as
+              required by statutory retention obligations.
+            </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Recipients</h2>
-            <p>Data may be shared with service providers (e.g., hosting, email) who are contractually bound to process data in compliance with GDPR.</p>
+            <p>
+              Data may be shared with service providers (e.g., hosting, email) who are contractually
+              bound to process data in compliance with GDPR.
+            </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Your rights</h2>
-            <p>You have rights to access, rectification, erasure, restriction, objection, and data portability. You also have the right to lodge a complaint with the competent supervisory authority.</p>
+            <p>
+              You have rights to access, rectification, erasure, restriction, objection, and data
+              portability. You also have the right to lodge a complaint with the competent
+              supervisory authority.
+            </p>
           </section>
 
           <section>
@@ -52,4 +72,4 @@ const Datenschutz = () => {
   );
 };
 
-export default Datenschutz;
+export default Privacy;

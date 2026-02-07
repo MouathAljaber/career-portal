@@ -14,14 +14,14 @@ exports.protect = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: 'Not authorized, no token provided'
+        message: 'Not authorized, no token provided',
       });
     }
 
     try {
       // Verify token
       const decoded = jwt.verify(
-        token, 
+        token,
         process.env.JWT_SECRET || 'your-secret-key-change-in-production'
       );
 
@@ -30,7 +30,7 @@ exports.protect = async (req, res, next) => {
       if (!user) {
         return res.status(401).json({
           success: false,
-          message: 'User no longer exists'
+          message: 'User no longer exists',
         });
       }
 
@@ -39,19 +39,17 @@ exports.protect = async (req, res, next) => {
       req.userRole = decoded.role;
       req.user = user;
       next();
-
     } catch (error) {
       return res.status(401).json({
         success: false,
-        message: 'Not authorized, invalid token'
+        message: 'Not authorized, invalid token',
       });
     }
-
   } catch (error) {
     console.error('Auth middleware error:', error);
     return res.status(500).json({
       success: false,
-      message: 'Server authentication error'
+      message: 'Server authentication error',
     });
   }
 };
@@ -62,7 +60,7 @@ exports.authorize = (...roles) => {
     if (!roles.includes(req.userRole)) {
       return res.status(403).json({
         success: false,
-        message: `User role ${req.userRole} is not authorized to access this route`
+        message: `User role ${req.userRole} is not authorized to access this route`,
       });
     }
     next();

@@ -4,59 +4,100 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 const ThemeModeContext = createContext(null);
 
-const getTheme = (mode) => createTheme({
-  palette: {
-    mode,
-    primary: {
-      main: '#2563eb',
-      light: '#60a5fa',
-      dark: '#1d4ed8',
+const getTheme = mode =>
+  createTheme({
+    palette: {
+      mode,
+      primary: {
+        main: '#1e56d5',
+        light: '#5b8ef8',
+        dark: '#1248b3',
+      },
+      secondary: {
+        main: '#5b4ecf',
+        light: '#8b7ee0',
+        dark: '#3d2ca3',
+      },
+      background: {
+        default: mode === 'dark' ? '#0a0e27' : '#f8f9fc',
+        paper: mode === 'dark' ? '#0f1527' : '#ffffff',
+      },
+      text: {
+        primary: mode === 'dark' ? '#e4e6eb' : '#0f172a',
+        secondary: mode === 'dark' ? '#b0b3ba' : '#1f2937',
+      },
+      divider: mode === 'dark' ? '#2c3447' : '#e5e7eb',
     },
-    secondary: {
-      main: '#4f46e5',
-      light: '#818cf8',
-      dark: '#4338ca',
+    typography: {
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      h1: {
+        fontWeight: 700,
+        fontSize: '2.5rem',
+        lineHeight: 1.3,
+        letterSpacing: '-0.01em',
+      },
+      h2: {
+        fontWeight: 700,
+        fontSize: '2rem',
+        lineHeight: 1.35,
+        letterSpacing: '-0.005em',
+      },
+      h3: {
+        fontWeight: 700,
+        fontSize: '1.5rem',
+        lineHeight: 1.4,
+      },
+      h4: {
+        fontWeight: 700,
+        fontSize: '1.25rem',
+        lineHeight: 1.4,
+      },
+      h5: {
+        fontWeight: 700,
+        fontSize: '1.125rem',
+        lineHeight: 1.45,
+      },
+      h6: {
+        fontWeight: 700,
+        fontSize: '1rem',
+        lineHeight: 1.5,
+      },
+      body1: {
+        fontSize: '1rem',
+        lineHeight: 1.6,
+        letterSpacing: '0.3px',
+      },
+      body2: {
+        fontSize: '0.9375rem',
+        lineHeight: 1.6,
+        letterSpacing: '0.2px',
+      },
+      button: {
+        fontWeight: 700,
+        letterSpacing: '0.5px',
+      },
     },
-    background: {
-      default: mode === 'dark' ? '#0f172a' : '#f5f5f5',
-      paper: mode === 'dark' ? '#111827' : '#ffffff',
+    shape: {
+      borderRadius: 8,
     },
-  },
-  typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    h4: {
-      fontWeight: 600,
-    },
-    h5: {
-      fontWeight: 600,
-    },
-    h6: {
-      fontWeight: 600,
-    },
-  },
-  shape: {
-    borderRadius: 8,
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          fontWeight: 600,
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            textTransform: 'none',
+            fontWeight: 600,
+          },
+        },
+      },
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            boxShadow: mode === 'dark' ? '0 2px 10px rgba(0,0,0,0.4)' : '0 2px 8px rgba(0,0,0,0.1)',
+          },
         },
       },
     },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          boxShadow: mode === 'dark'
-            ? '0 2px 10px rgba(0,0,0,0.4)'
-            : '0 2px 8px rgba(0,0,0,0.1)',
-        },
-      },
-    },
-  },
-});
+  });
 
 export const ThemeModeProvider = ({ children }) => {
   const [mode, setMode] = useState(() => localStorage.getItem('themeMode') || 'light');
@@ -66,7 +107,7 @@ export const ThemeModeProvider = ({ children }) => {
   }, [mode]);
 
   const toggleMode = () => {
-    setMode((prev) => (prev === 'light' ? 'dark' : 'light'));
+    setMode(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
   const theme = useMemo(() => getTheme(mode), [mode]);

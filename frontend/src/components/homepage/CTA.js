@@ -19,24 +19,21 @@ const CTA = () => {
                 <Users className="w-6 h-6 text-white" />
               </div>
 
-              <h3 className="text-2xl font-bold text-white mb-3">
-                For Students
-              </h3>
-              <p className="text-white/80 mb-6 leading-relaxed">
-                Create your profile and get matched with internships from 500+ companies. It's free forever.
+              <h3 className="text-2xl font-bold text-white mb-3">For Students</h3>
+              <p className="text-white font-medium mb-6 leading-relaxed">
+                Create your profile and get matched with internships from 500+ companies. It's free
+                forever.
               </p>
 
               <button
                 onClick={() => navigate('/login')}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-lg hover:bg-gray-50 font-medium transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary-600 rounded-lg hover:bg-gray-50 hover:shadow-md transition-all duration-200 font-semibold hover:-translate-y-0.5 active:translate-y-0 shadow-sm"
               >
                 Start for Free
                 <ArrowRight className="w-4 h-4" />
               </button>
 
-              <p className="text-xs text-white/60 mt-4">
-                No credit card required
-              </p>
+              <p className="text-xs text-white/90 mt-4 font-medium">No credit card required</p>
             </div>
           </div>
 
@@ -49,24 +46,21 @@ const CTA = () => {
                 <Building2 className="w-6 h-6 text-white" />
               </div>
 
-              <h3 className="text-2xl font-bold text-white mb-3">
-                For Employers
-              </h3>
+              <h3 className="text-2xl font-bold text-white mb-3">For Employers</h3>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                Access top talent from premier institutions. Post internships and find your next star intern.
+                Access top talent from premier institutions. Post internships and find your next
+                star intern.
               </p>
 
               <button
                 onClick={() => navigate('/login')}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 font-medium transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-secondary-500 to-secondary-600 text-white rounded-lg hover:from-secondary-600 hover:to-secondary-700 font-medium transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 shadow-md"
               >
                 Post Internship
                 <ArrowRight className="w-4 h-4" />
               </button>
 
-              <p className="text-xs text-gray-400 mt-4">
-                Starts at {currency.symbol}99/posting
-              </p>
+              <p className="text-xs text-gray-400 mt-4">Starts at {currency.symbol}99/posting</p>
             </div>
           </div>
         </div>

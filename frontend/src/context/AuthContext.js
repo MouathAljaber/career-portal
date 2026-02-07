@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { authAPI, internshipAPI, studentAPI } from '../services/api';
+import notificationService from '../services/notificationService';
 
 const AuthContext = createContext({});
 
@@ -9,61 +10,48 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState(localStorage.getItem('token'));
-
-  // Set axios defaults
-  useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    } else {
-      delete axios.defaults.headers.common['Authorization'];
-    }
-  }, [token]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userPreferences, setUserPreferences] = useState(() => {
+    const stored = localStorage.getItem('userPreferences');
+    return stored
+      ? JSON.parse(stored)
+      : {
+          theme: 'light',
+          notifications: true,
+          emailUpdates: true,
+          savedJobs: [],
+          appliedJobs: [],
+          viewedJobs: [],
+          searchHistory: [],
+        };
+  });
 
   // Load user from localStorage on mount
   useEffect(() => {
     const loadUser = async () => {
-      const storedUser = localStorage.getItem('user');
-      const storedToken = localStorage.getItem('token');
-      
-      if (storedToken && storedUser) {
-        try {
-          setUser(JSON.parse(storedUser));
-          setToken(storedToken);
-          axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
-        } catch (error) {
-          console.error('Error loading user from storage:', error);
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-        }
+      const storedUser = authAPI.getCurrentUser();
+      const isAuth = authAPI.isAuthenticated();
+
+      if (isAuth && storedUser) {
+        setUser(storedUser);
+        setIsAuthenticated(true);
       }
       setLoading(false);
     };
-    
+
     loadUser();
   }, []);
 
   // Register function
-  const register = async (email, password, role) => {
+  const register = async userData => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-      const response = await axios.post(`${API_URL}/api/auth/register`, {
-        email,
-        password,
-        role
-      });
+      const response = await authAPI.register(userData);
 
-      const { token, user } = response.data;
-      
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-      
-      setToken(token);
-      setUser(user);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      
+      setUser(response.user);
+      setIsAuthenticated(true);
+
       toast.success('Registration successful!');
-      return { success: true, user };
+      return { success: true, user: response.user };
     } catch (error) {
       const message = error.response?.data?.message || 'Registration failed';
       toast.error(message);
@@ -72,25 +60,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Login function
-  const login = async (email, password) => {
+  const login = async credentials => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-      const response = await axios.post(`${API_URL}/api/auth/login`, {
-        email,
-        password
-      });
+      const response = await authAPI.login(credentials);
 
-      const { token, user } = response.data;
-      
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-      
-      setToken(token);
-      setUser(user);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      
+      setUser(response.user);
+      setIsAuthenticated(true);
+
       toast.success('Login successful!');
-      return { success: true, user };
+      return { success: true, user: response.user };
     } catch (error) {
       const message = error.response?.data?.message || 'Login failed';
       toast.error(message);
@@ -100,32 +78,175 @@ export const AuthProvider = ({ children }) => {
 
   // Logout function
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    authAPI.logout();
+    localStorage.removeItem('userPreferences');
     setUser(null);
-    setToken(null);
-    delete axios.defaults.headers.common['Authorization'];
+    setIsAuthenticated(false);
+    setUserPreferences({
+      theme: 'light',
+      notifications: true,
+      emailUpdates: true,
+      savedJobs: [],
+      appliedJobs: [],
+      viewedJobs: [],
+      searchHistory: [],
+    });
     toast.success('Logged out successfully');
   };
 
   // Update user function
-  const updateUser = (userData) => {
+  const updateUser = userData => {
     const updatedUser = { ...user, ...userData };
     setUser(updatedUser);
     localStorage.setItem('user', JSON.stringify(updatedUser));
+  };
+
+  // Update user preferences
+  const updatePreferences = newPreferences => {
+    const updated = { ...userPreferences, ...newPreferences };
+    setUserPreferences(updated);
+    localStorage.setItem('userPreferences', JSON.stringify(updated));
+  };
+
+  // Save job for student - with backend integration
+  const saveJob = async (jobId, jobDetails) => {
+    const existingJob = userPreferences.savedJobs.find(j => j.id === jobId);
+    if (!existingJob) {
+      // Update local state immediately
+      updatePreferences({
+        savedJobs: [
+          ...userPreferences.savedJobs,
+          {
+            id: jobId,
+            ...jobDetails,
+            savedAt: new Date().toISOString(),
+          },
+        ],
+      });
+
+      // Sync with backend if authenticated
+      if (isAuthenticated) {
+        try {
+          await studentAPI.toggleBookmark(jobId);
+        } catch (error) {
+          console.error('Error syncing bookmark:', error);
+        }
+      }
+
+      toast.success('Internship bookmarked!');
+      return true;
+    }
+    return false;
+  };
+
+  // Remove saved job - with backend integration
+  const unsaveJob = async jobId => {
+    updatePreferences({
+      savedJobs: userPreferences.savedJobs.filter(j => j.id !== jobId),
+    });
+
+    // Sync with backend if authenticated
+    if (isAuthenticated) {
+      try {
+        await studentAPI.toggleBookmark(jobId);
+      } catch (error) {
+        console.error('Error syncing bookmark removal:', error);
+      }
+    }
+
+    toast.success('Bookmark removed');
+  };
+
+  // Check if job is saved
+  const isJobSaved = jobId => {
+    return userPreferences.savedJobs.some(j => j.id === jobId);
+  };
+
+  // Apply to job - now with backend integration
+  const applyToJob = async (jobId, jobDetails) => {
+    if (!userPreferences.appliedJobs.find(j => j.id === jobId)) {
+      // Update local state immediately for better UX
+      updatePreferences({
+        appliedJobs: [
+          ...userPreferences.appliedJobs,
+          {
+            id: jobId,
+            ...jobDetails,
+            appliedAt: new Date().toISOString(),
+          },
+        ],
+      });
+
+      // Call backend API to increment applicants
+      try {
+        await internshipAPI.apply(jobId, {
+          resume: jobDetails.resume,
+          coverLetter: jobDetails.coverLetter,
+          ...jobDetails,
+        });
+
+        // Add notification for student
+        notificationService.notifyApplicationSubmitted({
+          id: jobId,
+          company: jobDetails.company,
+          title: jobDetails.title,
+        });
+
+        // Add notification for company
+        notificationService.notifyNewApplication({
+          id: Date.now(),
+          studentName:
+            user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.email,
+          position: jobDetails.title,
+          internshipId: jobId,
+        });
+
+        toast.success('Application submitted successfully!');
+        return true;
+      } catch (error) {
+        // If backend fails, still keep local application for demo purposes
+        console.error('Backend application failed:', error);
+
+        // Still notify student
+        notificationService.notifyApplicationSubmitted({
+          id: jobId,
+          company: jobDetails.company,
+          title: jobDetails.title,
+        });
+
+        toast.success('Application submitted successfully!');
+        return true;
+      }
+    }
+    toast('You already applied to this position');
+    return false;
+  };
+
+  // Track job view
+  const viewJob = jobId => {
+    const viewedJobs = userPreferences.viewedJobs.filter(id => id !== jobId);
+    updatePreferences({
+      viewedJobs: [jobId, ...viewedJobs].slice(0, 50), // Keep last 50
+    });
   };
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        token,
         loading,
+        isAuthenticated,
+        userPreferences,
         register,
         login,
         logout,
         updateUser,
-        isAuthenticated: !!user
+        updatePreferences,
+        saveJob,
+        unsaveJob,
+        isJobSaved,
+        applyToJob,
+        viewJob,
       }}
     >
       {children}

@@ -24,7 +24,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: '100vh',
-    backgroundColor: '#f5f5f5'
+    backgroundColor: '#f5f5f5',
   },
   spinner: {
     width: '50px',
@@ -33,8 +33,8 @@ const styles = {
     borderTop: '5px solid #3498db',
     borderRadius: '50%',
     animation: 'spin 1s linear infinite',
-    marginBottom: '20px'
-  }
+    marginBottom: '20px',
+  },
 };
 
 export default PrivateRoute;

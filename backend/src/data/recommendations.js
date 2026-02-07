@@ -8,7 +8,7 @@ const internships = [
     duration: '12 weeks',
     stipend: '$1,200/mo',
     skills: ['react', 'javascript', 'css', 'html'],
-    description: 'Work with senior engineers to ship UI features and accessibility fixes.'
+    description: 'Work with senior engineers to ship UI features and accessibility fixes.',
   },
   {
     id: 'int-backend-node',
@@ -18,7 +18,7 @@ const internships = [
     duration: '10 weeks',
     stipend: '$1,500/mo',
     skills: ['node', 'express', 'mongodb', 'api design'],
-    description: 'Build APIs, write tests, and tune queries for a data analytics product.'
+    description: 'Build APIs, write tests, and tune queries for a data analytics product.',
   },
   {
     id: 'int-ux-research',
@@ -28,7 +28,7 @@ const internships = [
     duration: '8 weeks',
     stipend: '$1,000/mo',
     skills: ['research', 'interviews', 'figma', 'prototyping'],
-    description: 'Plan studies, synthesize insights, and collaborate with product designers.'
+    description: 'Plan studies, synthesize insights, and collaborate with product designers.',
   },
   {
     id: 'int-ml',
@@ -38,7 +38,7 @@ const internships = [
     duration: '14 weeks',
     stipend: '$1,800/mo',
     skills: ['python', 'pandas', 'numpy', 'ml'],
-    description: 'Prototype ML models, run experiments, and help deploy inference endpoints.'
+    description: 'Prototype ML models, run experiments, and help deploy inference endpoints.',
   },
   {
     id: 'int-mobile-react-native',
@@ -48,7 +48,7 @@ const internships = [
     duration: '10 weeks',
     stipend: '$1,400/mo',
     skills: ['react native', 'typescript', 'testing'],
-    description: 'Ship patient-facing mobile features and improve release stability.'
+    description: 'Ship patient-facing mobile features and improve release stability.',
   },
   {
     id: 'int-devops',
@@ -58,8 +58,8 @@ const internships = [
     duration: '12 weeks',
     stipend: '$1,600/mo',
     skills: ['aws', 'docker', 'ci/cd', 'scripting'],
-    description: 'Automate pipelines, improve observability, and harden cloud deployments.'
-  }
+    description: 'Automate pipelines, improve observability, and harden cloud deployments.',
+  },
 ];
 
 const mentors = [
@@ -71,7 +71,7 @@ const mentors = [
     focusAreas: ['frontend', 'design systems', 'accessibility'],
     skills: ['react', 'javascript', 'css', 'testing'],
     timezone: 'UTC-5',
-    slotsPerWeek: 3
+    slotsPerWeek: 3,
   },
   {
     id: 'mnt-diego',
@@ -81,7 +81,7 @@ const mentors = [
     focusAreas: ['ux research', 'portfolio reviews', 'prototyping'],
     skills: ['figma', 'research', 'prototyping'],
     timezone: 'UTC-6',
-    slotsPerWeek: 4
+    slotsPerWeek: 4,
   },
   {
     id: 'mnt-sara',
@@ -91,7 +91,7 @@ const mentors = [
     focusAreas: ['data pipelines', 'sql', 'cloud'],
     skills: ['python', 'sql', 'aws', 'docker'],
     timezone: 'UTC-8',
-    slotsPerWeek: 2
+    slotsPerWeek: 2,
   },
   {
     id: 'mnt-nikhil',
@@ -101,7 +101,7 @@ const mentors = [
     focusAreas: ['ml', 'model deployment', 'career switches'],
     skills: ['python', 'ml', 'pandas', 'numpy'],
     timezone: 'UTC+1',
-    slotsPerWeek: 3
+    slotsPerWeek: 3,
   },
   {
     id: 'mnt-lena',
@@ -111,8 +111,8 @@ const mentors = [
     focusAreas: ['cloud foundations', 'observability', 'incident response'],
     skills: ['aws', 'docker', 'ci/cd', 'scripting'],
     timezone: 'UTC+2',
-    slotsPerWeek: 3
-  }
+    slotsPerWeek: 3,
+  },
 ];
 
 module.exports = { internships, mentors };

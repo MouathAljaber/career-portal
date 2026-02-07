@@ -1,9 +1,11 @@
 import React from 'react';
+import Header from '../components/homepage/Header';
 import Footer from '../components/homepage/Footer';
 
 const Cookies = () => {
   return (
     <div className="min-h-screen bg-gray-50">
+      <Header />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">Cookie Policy</h1>
         <p className="text-sm text-gray-500 mb-8">Last updated: 02/02/2026</p>

@@ -15,13 +15,13 @@ const generateToken = (userId, role) => {
 // @access  Public
 exports.register = async (req, res) => {
   try {
-    const { email, password, role } = req.body;
+    const { name, email, password, role } = req.body;
 
     // Validation
     if (!email || !password || !role) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide email, password, and role'
+        message: 'Please provide email, password, and role',
       });
     }
 
@@ -30,15 +30,16 @@ exports.register = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: 'User already exists with this email'
+        message: 'User already exists with this email',
       });
     }
 
     // Create user
     const user = await User.create({
+      name,
       email,
       password,
-      role
+      role,
     });
 
     // Generate token
@@ -49,35 +50,35 @@ exports.register = async (req, res) => {
       token,
       user: {
         id: user._id,
+        name: user.name,
         email: user.email,
         role: user.role,
-        createdAt: user.createdAt
-      }
+        createdAt: user.createdAt,
+      },
     });
-
   } catch (error) {
     console.error('Registration error:', error);
-    
+
     // Handle duplicate key error
     if (error.code === 11000) {
       return res.status(400).json({
         success: false,
-        message: 'User already exists with this email'
+        message: 'User already exists with this email',
       });
     }
-    
+
     // Handle validation errors
     if (error.name === 'ValidationError') {
       const messages = Object.values(error.errors).map(err => err.message);
       return res.status(400).json({
         success: false,
-        message: messages.join(', ')
+        message: messages.join(', '),
       });
     }
-    
+
     res.status(500).json({
       success: false,
-      message: 'Server error during registration'
+      message: 'Server error during registration',
     });
   }
 };
@@ -93,7 +94,7 @@ exports.login = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide email and password'
+        message: 'Please provide email and password',
       });
     }
 
@@ -102,16 +103,26 @@ exports.login = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials'
+        message: 'Invalid credentials',
       });
     }
 
+    const isBcryptHash = typeof user.password === 'string' && user.password.startsWith('$2');
+
     // Check password
-    const isPasswordValid = await user.comparePassword(password);
+    let isPasswordValid = await user.comparePassword(password);
+
+    // Support legacy/plaintext passwords in dev DB and upgrade on login
+    if (!isPasswordValid && !isBcryptHash && user.password === password) {
+      user.password = password;
+      await user.save();
+      isPasswordValid = true;
+    }
+
     if (!isPasswordValid) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials'
+        message: 'Invalid credentials',
       });
     }
 
@@ -123,17 +134,17 @@ exports.login = async (req, res) => {
       token,
       user: {
         id: user._id,
+        name: user.name,
         email: user.email,
         role: user.role,
-        createdAt: user.createdAt
-      }
+        createdAt: user.createdAt,
+      },
     });
-
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({
       success: false,
-      message: 'Server error during login'
+      message: 'Server error during login',
     });
   }
 };
@@ -144,24 +155,23 @@ exports.login = async (req, res) => {
 exports.getMe = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
-    
+
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'User not found'
+        message: 'User not found',
       });
     }
 
     res.json({
       success: true,
-      user
+      user,
     });
-
   } catch (error) {
     console.error('Get user error:', error);
     res.status(500).json({
       success: false,
-      message: 'Server error'
+      message: 'Server error',
     });
   }
 };

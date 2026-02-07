@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   try {
     console.log('🔄 Attempting to connect to MongoDB Atlas...');
-    
+
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -16,7 +16,7 @@ const connectDB = async () => {
     console.log(`📡 Host: ${conn.connection.host}`);
     console.log(`📊 Database: ${conn.connection.name}`);
     console.log('='.repeat(50));
-    
+
     return conn;
   } catch (error) {
     console.error('='.repeat(50));
@@ -30,9 +30,11 @@ const connectDB = async () => {
     console.log('4. Check network connectivity');
     console.log('');
     console.log('📋 Your connection string should look like:');
-    console.log('mongodb+srv://USERNAME:PASSWORD@cluster0.mongodb.net/DATABASE_NAME?retryWrites=true&w=majority');
+    console.log(
+      'mongodb+srv://USERNAME:PASSWORD@cluster0.mongodb.net/DATABASE_NAME?retryWrites=true&w=majority'
+    );
     console.log('='.repeat(50));
-    
+
     process.exit(1);
   }
 };

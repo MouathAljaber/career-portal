@@ -10,7 +10,7 @@ const quickFilters = [
 const FilterTopBar = ({ filters, setFilters, totalCount, viewMode, setViewMode }) => {
   const [sortBy, setSortBy] = useState('latest');
 
-  const toggleQuickFilter = (filterId) => {
+  const toggleQuickFilter = filterId => {
     if (filterId === 'remote') {
       // Toggle Remote work type
       const currentWorkTypes = filters.workTypes;
@@ -27,7 +27,7 @@ const FilterTopBar = ({ filters, setFilters, totalCount, viewMode, setViewMode }
     }
   };
 
-  const isFilterActive = (filterId) => {
+  const isFilterActive = filterId => {
     if (filterId === 'remote') {
       return filters.workTypes.includes('Remote');
     } else if (filterId === 'high-stipend') {
@@ -38,7 +38,7 @@ const FilterTopBar = ({ filters, setFilters, totalCount, viewMode, setViewMode }
     return false;
   };
 
-  const handleSortChange = (e) => {
+  const handleSortChange = e => {
     setSortBy(e.target.value);
     setFilters({ ...filters, sortBy: e.target.value });
   };
@@ -48,7 +48,7 @@ const FilterTopBar = ({ filters, setFilters, totalCount, viewMode, setViewMode }
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         {/* Quick Filters */}
         <div className="flex flex-wrap items-center gap-2">
-          {quickFilters.map((filter) => (
+          {quickFilters.map(filter => (
             <button
               key={filter.id}
               onClick={() => toggleQuickFilter(filter.id)}
@@ -66,10 +66,11 @@ const FilterTopBar = ({ filters, setFilters, totalCount, viewMode, setViewMode }
 
         {/* Sort & View Controls */}
         <div className="flex items-center gap-3">
-          <select 
+          <select
             value={sortBy}
             onChange={handleSortChange}
-            className="h-8 px-3 text-xs border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+            className="h-8 px-3 text-xs border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+          >
             <option value="latest">Latest First</option>
             <option value="stipend-high">Stipend: High to Low</option>
             <option value="stipend-low">Stipend: Low to High</option>
@@ -80,7 +81,9 @@ const FilterTopBar = ({ filters, setFilters, totalCount, viewMode, setViewMode }
             <button
               onClick={() => setViewMode('grid')}
               className={`h-7 w-7 p-0 flex items-center justify-center rounded transition-colors ${
-                viewMode === 'grid' ? 'bg-gray-200 text-gray-900' : 'text-gray-600 hover:text-gray-900'
+                viewMode === 'grid'
+                  ? 'bg-gray-200 text-gray-900'
+                  : 'text-gray-600 hover:text-gray-900'
               }`}
             >
               <Grid3X3 className="w-4 h-4" />
@@ -88,7 +91,9 @@ const FilterTopBar = ({ filters, setFilters, totalCount, viewMode, setViewMode }
             <button
               onClick={() => setViewMode('list')}
               className={`h-7 w-7 p-0 flex items-center justify-center rounded transition-colors ${
-                viewMode === 'list' ? 'bg-gray-200 text-gray-900' : 'text-gray-600 hover:text-gray-900'
+                viewMode === 'list'
+                  ? 'bg-gray-200 text-gray-900'
+                  : 'text-gray-600 hover:text-gray-900'
               }`}
             >
               <List className="w-4 h-4" />
@@ -99,8 +104,8 @@ const FilterTopBar = ({ filters, setFilters, totalCount, viewMode, setViewMode }
 
       {/* Results count */}
       <div className="mt-3 pt-3 border-t border-gray-200">
-        <p className="text-sm text-gray-600">
-          Showing <span className="font-medium text-gray-900">{totalCount}</span> internships
+        <p className="text-sm text-gray-800 font-medium">
+          Showing <span className="font-bold text-gray-900">{totalCount}</span> internships
         </p>
       </div>
     </div>
